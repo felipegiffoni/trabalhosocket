@@ -1,0 +1,23 @@
+import socket
+
+# Define o endereço IP e a porta do servidor
+HOST = '127.0.0.1'
+PORT = 9999
+
+# Cria um objeto de socket TCP/IP
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# Conecta-se ao servidor
+sock.connect((HOST, PORT))
+
+# Envia um número para o servidor
+num = int(input('Digite um número: '))
+sock.sendall(str(num).encode('utf-8'))
+
+# Recebe a resposta do servidor
+data = sock.recv(1024)
+response = data.decode('utf-8')
+print('Resposta recebida:', response)
+
+# Fecha a conexão
+sock.close()
