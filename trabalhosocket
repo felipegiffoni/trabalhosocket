@@ -1,0 +1,37 @@
+import socket
+
+# Define o endereço IP e a porta do servidor
+HOST = '127.0.0.1'
+PORT = 9999
+
+# Cria um objeto de socket TCP/IP
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+# Associa o socket ao endereço IP e porta definidos
+sock.bind((HOST, PORT))
+
+# Inicia o modo passivo do servidor, aguardando por conexões
+sock.listen()
+
+while True:
+    # Espera por uma conexão
+    print('Aguardando conexão...')
+    conn, addr = sock.accept()
+    print('Conectado por', addr)
+
+    # Recebe o número enviado pelo cliente
+    data = conn.recv(1024)
+    num = int(data.decode('utf-8'))
+
+    # Verifica o número e envia a resposta adequada
+    if len(str(num)) > 10:
+        response = 'x' * len(str(num))
+    elif num % 2 == 0:
+        response = 'PAR'
+    else:
+        response = 'ÍMPAR'
+
+    conn.sendall(response.encode('utf-8'))
+
+    # Fecha a conexão
+    conn.close()
